@@ -4,9 +4,9 @@ package main;
 
 public interface Vehicle{
 	
-	public void steer(double degrees);
+	public void steer(Vector2 velocity);
 	
-	public void setSpeed(double speed);
+	//public void setSpeed(double speed);
 
 	public VehicleState getState();
 	

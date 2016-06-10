@@ -29,14 +29,10 @@ public class VehicleOperateHandler implements HttpHandler {
 		String query = requestedURI.getRawQuery();
 		HashMap<String, Object> params = parseQuery(query);
 		
-		// Parameters should be UID, rotation and speed
-		
+		// Parameters should be UID, velocityx and velocityy		
 		Vehicle vehicle = vEnvironment.getVehicle((String)params.get("uid"));
-		
-		vehicle.steer((Double)params.get("rotation"));
-		vehicle.setSpeed((Double)params.get("speed")/1000);
-		
-		
+				
+		vehicle.steer(new Vector2((Double)params.get("velocityx")/1000, (Double)params.get("velocityy")/1000));		
 
 	}
 	
@@ -56,7 +52,7 @@ public class VehicleOperateHandler implements HttpHandler {
 				// Value remains String
 				paramValue = splitParam[1];
 				paramMap.put(paramName, paramValue);
-			}else if(paramName.equals("rotation") || paramName.equals("speed")){
+			}else if(paramName.equals("velocityx") || paramName.equals("velocityy")){
 				// Value is converted to double
 				paramValue = Double.parseDouble(splitParam[1]);
 				paramMap.put(paramName, paramValue);

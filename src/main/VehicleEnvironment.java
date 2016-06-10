@@ -7,8 +7,11 @@ import java.util.HashMap;
 // TODO: Make thread safe
 public class VehicleEnvironment{
 	
-	public static final double DEFAULT_WIDTH = 100;
-	public static final double DEFAULT_HEIGHT = 100;
+	public static final double DEFAULT_WIDTH = 500;
+	public static final double DEFAULT_HEIGHT = 500;
+	
+	public double width;
+	public double height;
 	
 	public static final String DEFAULT_VEHICLE = "CAR";
 	

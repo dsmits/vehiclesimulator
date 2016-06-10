@@ -7,34 +7,43 @@ public class VehicleState {
 	public double x;
 	public double y;
 	
-	public double orientation;
-	
-	public double rotation;
-	public double speed;
+	public double velocityX;
+	public double velocityY;
 	
 	public VehicleState(){
-		this(0, 0, 0, 0, 0);
+		this(0, 0, 0, 0);
 	}
 	
-	public VehicleState(Vector2 location, double orientation, double rotation, double speed){
-		this(location.x, location.y, orientation, rotation, speed);
-	}
-	
-	public VehicleState(double x, double y, double orientation, double rotation, double speed){
+	public VehicleState(double x, double y, double velocityX, double velocityY){
 		this.x = x;
 		this.y = y;
-		this.orientation = orientation;
-		this.rotation = rotation;
-		this.speed = speed;
+		this.velocityX = x;
+		this.velocityY = y;
 		
 	}
+//	public VehicleState(){
+//		this(0, 0, 0, 0, 0);
+//	}
+//	
+//	public VehicleState(Vector2 location, double orientation, double rotation, double speed){
+//		this(location.x, location.y, orientation, rotation, speed);
+//	}
+//	
+//	public VehicleState(double x, double y, double orientation, double rotation, double speed){
+//		this.x = x;
+//		this.y = y;
+//		this.orientation = orientation;
+//		this.rotation = rotation;
+//		this.speed = speed;
+//		
+//	}
 	
 	@Override
 	public boolean equals(Object o){
 		
 		if(o.getClass() == VehicleState.class){
 			VehicleState v = (VehicleState) o;		
-			return v.orientation == orientation && v.rotation == rotation && v.speed == speed && v.x == x && v.y == y;
+			return v.x == x && v.y == y && v.velocityX == velocityX && v.velocityY == velocityY;
 			
 		} else{
 			return false;
@@ -43,8 +52,7 @@ public class VehicleState {
 
 	@Override
 	public String toString() {
-		return "VehicleState [x=" + x + ", y=" + y + ", orientation=" + orientation + ", rotation=" + rotation
-				+ ", speed=" + speed + "]";
+		return "VehicleState [x=" + x + ", y=" + y + ", velocityX=" + velocityX + ", velocityY=" + velocityY + "]";
 	}
 	
 	public HashMap<String, String> toMap(){
@@ -52,9 +60,8 @@ public class VehicleState {
 		
 		map.put("x", String.valueOf(x));
 		map.put("y", String.valueOf(y));
-		map.put("orientation", String.valueOf(orientation));
-		map.put("rotation", String.valueOf(rotation));
-		map.put("speed ", String.valueOf(speed));
+		map.put("velocityX", String.valueOf(velocityX));
+		map.put("velocityY", String.valueOf(velocityY));
 		
 		return map;
 	}
