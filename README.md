@@ -2,7 +2,7 @@
 
 Author: Djura Smits
 
-Running the server:
+<h2>Running the server:</h2>
 
 Open a terminal and go to the location of vehiclesimulator.jar
 Execute the following:
@@ -11,7 +11,8 @@ java -jar vehiclesimulator.jar
 The server will listen to port 8000 by default. The desired port can be added as argument:
 java -jar vehiclesimulator.jar 9000
 
-The simulator can be operated through http requests:
+<h2>Calling the server</h2>
+The simulator can be operated through http requests.
 
 There are several context paths that can be called:
 
@@ -33,7 +34,7 @@ Instantiates another vehicle
 
 ------------------------------------------------------------------------------
 
-Running the client:
+<h2>Running the client:</h2>
 
 The client is implemented completely in JavaScript.
 Open  simulatorClient.html in a webbrowser to use it.
