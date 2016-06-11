@@ -1,4 +1,4 @@
-VEHICLE SIMULATOR
+<h1>VEHICLE SIMULATOR</h1>
 
 Author: Djura Smits
 
