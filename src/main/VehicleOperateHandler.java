@@ -1,6 +1,7 @@
 package main;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.URI;
 import java.util.HashMap;
 
@@ -8,7 +9,6 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
 /**
- * @author djura
  *
  * VehicleOperateHandler handles requests to change the movement of a vehicle.
  * There are three required parameters: uid, rotation and speed.
@@ -32,7 +32,16 @@ public class VehicleOperateHandler implements HttpHandler {
 		// Parameters should be UID, velocityx and velocityy		
 		Vehicle vehicle = vEnvironment.getVehicle((String)params.get("uid"));
 				
-		vehicle.steer(new Vector2((Double)params.get("velocityx")/1000, (Double)params.get("velocityy")/1000));		
+		vehicle.steer(new Vector2((Double)params.get("velocityx"), (Double)params.get("velocityy")));
+		
+		String response = "success";
+		
+		he.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
+		he.sendResponseHeaders(200, response.getBytes().length);
+		
+		OutputStream os = he.getResponseBody();
+		os.write(response.getBytes());
+		he.close();
 
 	}
 	

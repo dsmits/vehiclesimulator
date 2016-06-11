@@ -4,144 +4,101 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.rmi.server.UID;
 
-import javax.swing.UIDefaults;
+/**
+ * Simulated vehicle. This implementation only computes new locations when the
+ * state is requested or the moving direction is updated.
+ */
+public class VehicleImpl implements Vehicle {
 
-// TODO: Make thread safe
-public class VehicleImpl implements Vehicle{
-	
-	//public static final double STEERING_SENSITIVITY = 1;
-	//public static final double VEHICLE_LENGTH = 10;
-	//public static final double MAX_STEERING_ROTATION = Math.PI/4;
-	
+	public static final double DEFAULT_X = 10;
+	public static final double DEFAULT_Y = 10;
+	public static final double MAX_SPEED = 0.05;
+
 	private String uid;
-	
+
 	private Vector2 velocity;
-	
-	
+
 	private long lastOperationTime;
-	
+
 	private Vector2 lastLocation;
-	
+
 	private VehicleEnvironment vEnvironment;
-	
-	
-	public VehicleImpl(){
-		this(new Vector2(), new Vector2());
-		
+
+	public VehicleImpl(VehicleEnvironment vEnvironment) {
+		this(new Vector2(DEFAULT_X, DEFAULT_Y), new Vector2(), vEnvironment);
+
 	}
-	
-	public VehicleImpl(Vector2 location, Vector2 velocity){
+
+	/**
+	 * Instantiates a new Vehicle.
+	 * 
+	 * @param location
+	 *            Initial location
+	 * @param velocity
+	 *            Initial velocity
+	 * @param vEnvironment
+	 *            The VehicleEnvironment this vehicle is instantiated in.
+	 */
+	public VehicleImpl(Vector2 location, Vector2 velocity, VehicleEnvironment vEnvironment) {
 		this.velocity = velocity;
 		this.lastLocation = location;
-		
+
 		this.vEnvironment = vEnvironment;
-		
+
 		lastOperationTime = System.currentTimeMillis();
-		
+
 		uid = new UID().toString();
-		
-		//Making a UID that is also GET request friendly
+
+		// Making a UID that is also GET request friendly
 		try {
 			uid = URLEncoder.encode(uid, "UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-	}
-	
 
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see main.Vehicle#steer(main.Vector2)
+	 */
 	@Override
 	public synchronized void steer(Vector2 newVelocity) {
 		sync();
 		velocity = newVelocity;
-		
+
 	}
 
-//	@Override
-//	public synchronized void setSpeed(double speed) {
-//		sync();
-//		this.speed = speed;
-//		
-//	}
-	
-	private synchronized void sync(){
+	/**
+	 * Computes the new locations of the vehicles. Locations are exclusively
+	 * updated when the state is requested or the movement is modified through
+	 * steer().
+	 */
+	private synchronized void sync() {
 		long currentTime = System.currentTimeMillis();
-		
+
 		long timeDifference = currentTime - lastOperationTime;
-		
-		lastLocation.x += velocity.x * timeDifference;
-		lastLocation.y += velocity.y * timeDifference;
-		
-//		if(lastLocation.x > vEnvironment.width){
-//			lastLocation.x = 0;
-//		}
-//		if(lastLocation.y > vEnvironment.height){
-//			lastLocation.y = 0;
-//		}
-//		if(lastLocation.x < 0){
-//			lastLocation.x  = vEnvironment.width - 1;
-//		}
-//		if(lastLocation.y < 0){
-//			lastLocation.y = vEnvironment.height - 1;
-//		}
-		
-		
+
+		double newLocationX = lastLocation.x + velocity.x * MAX_SPEED * timeDifference;
+		double newLocationY = lastLocation.y + velocity.y * MAX_SPEED * timeDifference;
+
+		if (newLocationX <= vEnvironment.width && newLocationX > 0) {
+			lastLocation.x = newLocationX;
+		}
+		if (newLocationY <= vEnvironment.height && newLocationY > 0) {
+			lastLocation.y = newLocationY;
+		}
+
+		lastOperationTime = currentTime;
+
 	}
-	
-//	private synchronized void sync(){
-//		long currentTime = System.currentTimeMillis();
-//		
-//		long timeDifference = currentTime - lastOperationTime;
-//		
-//		double newX;
-//		double newY;
-//		
-//		double newOrientation;
-//		
-//		// Special case when steering is 0
-//		if(rotation == 0){			
-//			newX = lastLocation.x + speed * Math.cos(lastOrientation + (Math.PI/2));
-//			newY = lastLocation.y + speed * Math.sin(lastOrientation + (Math.PI/2));
-//			
-//			newOrientation = lastOrientation;
-//
-//		}else{
-//			// First compute radius of the driving circle (caused by steering)
-//			double radius = VEHICLE_LENGTH/Math.sin(rotation * MAX_STEERING_ROTATION);
-//			double circumference = 2.0 * Math.PI * radius;
-//			double distance = speed * (double)timeDifference;
-//			double angle = (distance/circumference) * 2.0 * Math.PI;
-//			
-//			// With a speed of one the car should drive a complete circle in 5 seconds
-//			//double angle = speed * timeDifference * (2.0 * Math.PI / 10000.0);
-//			
-//			
-//			double circleCentreX = lastLocation.x - radius * Math.cos(lastOrientation);
-//			double circleCentreY = lastLocation.y - radius * Math.sin(lastOrientation);
-//			
-//			
-//			newX = circleCentreX + (radius * Math.cos(lastOrientation + angle));
-//			newY = circleCentreY + (radius * Math.sin(lastOrientation + angle));
-//			
-//			newOrientation = (lastOrientation + angle) % (2 * Math.PI);
-//			
-//			
-//		}
-//		
-//		// Compute new location		
-//		
-//		lastLocation.x = newX;
-//		lastLocation.y = newY;
-//		lastOrientation = newOrientation;
-//		
-//		
-//	}
 
 	@Override
 	public VehicleState getState() {
 		sync();
-		
+
 		return new VehicleState(lastLocation.x, lastLocation.y, velocity.x, velocity.y);
 	}
 
@@ -149,5 +106,5 @@ public class VehicleImpl implements Vehicle{
 	public String getUID() {
 		return uid;
 	}
-	
+
 }

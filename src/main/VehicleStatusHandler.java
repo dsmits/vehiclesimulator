@@ -9,11 +9,10 @@ import com.sun.net.httpserver.HttpHandler;
 
 import org.json.JSONObject;
 
-//TODO: Considering switching to a websocket implementation for this
+/**
+ * HttpHandler for requesting the status of the vehicles in the simulator.
+ */
 public class VehicleStatusHandler implements HttpHandler {
-	
-	// How often an update is sent to the client
-	public static final long updateRate = 1000;
 	
 	VehicleEnvironment vEnvironment;
 	
@@ -51,17 +50,6 @@ public class VehicleStatusHandler implements HttpHandler {
 		
 		return new JSONObject(mappedState);
 		
-		
 	}
-	
-//	public static void main(String[] args){
-//	VehicleEnvironment vEnvironment = new VehicleEnvironment();
-//	vEnvironment.addVehicle("CAR");
-//	vEnvironment.addVehicle("CAR");
-//	
-//	
-//	JSONObject jsonState = vehicleStatesToJSON(vEnvironment.getStates());
-//	System.out.println(jsonState.toString());
-//}
 
 }

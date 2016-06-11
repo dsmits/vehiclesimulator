@@ -10,26 +10,29 @@
 
 <body>
 
-<p><canvas id="displayCanvas" width="500", height="500"></canvas></p>
+<p><canvas id="displayCanvas" width="500" height="500"></canvas></p>
 
 <p>
 Pick a vehicle to operate:
 <select id="vehiclePicker" name="vehicles"></select>
 </p>
 <p>
-To steer the vehicle, use the directional buttons on your keyboard.
+To steer the vehicle, use the directional buttons on your keyboard. You can brake by pressing space.
 </p>
 <p>
 <button id="vehicleAddButton" type="button" onmouseup="addVehicle()">add vehicle</button>
+</p>
+<p>
 </p>
 </body>
 </html>
 
 <script type='text/javascript'>
-var offsetX = 250;
-var offsetY = 250;
+var offsetX = 0;
+var offsetY = 0;
+var updateInterval = 100;
 var carImage = new Image();
-carImage.src = "car1.png";
+carImage.src = "roomba_image.png";
 var vehiclePicker = document.getElementById("vehiclePicker");
 
 var vehicleAddButton = document.getElementById("vehicleAddButton");
@@ -42,7 +45,7 @@ var vehicles = [];
 function config() {
 	var canvas = document.getElementById("displayCanvas");
 	var context = canvas.getContext("2d");
-	context.fillStyle = "#ccffff";
+	canvas.style.backgroundColor = "#ccffff";
 
 }
 
@@ -76,7 +79,12 @@ function handleOperation(e){
 	
 	var requestURL = operateURLBase + "uid=" + uid + "&velocityx=" + velocityX + "&velocityy=" + velocityY;
 	console.log(requestURL);
-	$.get(requestURL);
+	$.get(requestURL, checkOperation);
+	
+}
+
+function checkOperation(data, status){
+	console.log(status);
 	
 }
 
@@ -120,10 +128,9 @@ function handleUpdate(data, status){
 			
 		}
 		
-		
-		
-		
 	}
+		
+	
 }
 
 function addVehicle(){
@@ -135,13 +142,13 @@ function addVehicle(){
 
 function updateDisplay(){
 	var statusURL = "http://localhost:8000/vehiclestatus";
-	
+		
 	$.get(statusURL, handleUpdate, "json");
 	
 	
 }
 window.onload = config;
-setInterval(updateDisplay, 100);
+setInterval(updateDisplay, updateInterval);
 window.onkeyup = handleOperation;
 
 
