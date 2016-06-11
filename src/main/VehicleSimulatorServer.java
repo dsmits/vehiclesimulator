@@ -5,25 +5,24 @@ import java.net.InetSocketAddress;
 import com.sun.net.httpserver.HttpServer;
 
 /**
- * @author djura
- *
  *         VehicleSimulatorServer instantiates a VehicleEnvironment and listens
  *         for requests on status updates and operating the vehicles over HTTP.
- * 
+ *         <p>
  *         There are several context paths that can be called:
  *         "http://[servername]/": The root context just returns a string
  *         indicating you are requesting the Vehicle Simulation Server.
- * 
+ *         <p>
  *         "http://[servername]/vehiclestatus": When requesting the
  *         vehiclestatus context a JSON string will be returned listing the
  *         locations and velocities of all vehicles in the simulator.
- * 
+ *         <p>
  *         "http://[servername]:8000/vehicleoperate?uid=[UID]&velocityx=[VELOCITYX]&velocityy=[VELOCITYY]":
  *         This URL is to operate the vehicle by specifying the velocities in X
  *         and Y direction. The specified velocities are relative, the resulting
  *         velocities are dependent on the vehicle.
- *         
- *         "http://[servername]/vehicleadd
+           <p>
+ *         "http://[servername]/vehicleadd:
+ *         Instantiates another vehicle.
  * 
  */
 public class VehicleSimulatorServer {

@@ -8,10 +8,24 @@ import java.util.HashMap;
  */
 public class VehicleState {
 
+	/**
+	 * Current x location
+	 */
 	public double x;
+	
+	/**
+	 * Current y location
+	 */
 	public double y;
 
+	/**
+	 * Current velocity on x axis
+	 */
 	public double velocityX;
+	
+	/**
+	 * Current velocity on y axis
+	 */
 	public double velocityY;
 
 	public VehicleState() {

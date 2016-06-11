@@ -14,12 +14,16 @@ import com.sun.net.httpserver.HttpHandler;
  * There are three required parameters: uid, rotation and speed.
  */
 public class VehicleOperateHandler implements HttpHandler {
-	
+
 	VehicleEnvironment vEnvironment;
-	
-	
-	
-	public VehicleOperateHandler(VehicleEnvironment vEnvironment){
+
+	/**
+	 * Constructor for the VehicleOperateHandler. Needs the VehicleEnvironment
+	 * that it is going to operate.
+	 * 
+	 * @param vEnvironment
+	 */
+	public VehicleOperateHandler(VehicleEnvironment vEnvironment) {
 		this.vEnvironment = vEnvironment;
 	}
 
@@ -28,49 +32,48 @@ public class VehicleOperateHandler implements HttpHandler {
 		URI requestedURI = he.getRequestURI();
 		String query = requestedURI.getRawQuery();
 		HashMap<String, Object> params = parseQuery(query);
-		
-		// Parameters should be UID, velocityx and velocityy		
-		Vehicle vehicle = vEnvironment.getVehicle((String)params.get("uid"));
-				
-		vehicle.steer(new Vector2((Double)params.get("velocityx"), (Double)params.get("velocityy")));
-		
+
+		// Parameters should be UID, velocityx and velocityy
+		Vehicle vehicle = vEnvironment.getVehicle((String) params.get("uid"));
+
+		vehicle.steer(new Vector2((Double) params.get("velocityx"), (Double) params.get("velocityy")));
+
 		String response = "success";
-		
+
 		he.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
 		he.sendResponseHeaders(200, response.getBytes().length);
-		
+
 		OutputStream os = he.getResponseBody();
 		os.write(response.getBytes());
 		he.close();
 
 	}
-	
-	
-	private HashMap<String, Object> parseQuery(String params){
+
+	private HashMap<String, Object> parseQuery(String params) {
 		HashMap<String, Object> paramMap = new HashMap<String, Object>();
-		
+
 		String[] split = params.split("&");
-		
-		for(String param : split){
+
+		for (String param : split) {
 			String[] splitParam = param.split("=");
 			String paramName = splitParam[0];
-			
+
 			Object paramValue;
-			
-			if(paramName.equals("uid")){
+
+			if (paramName.equals("uid")) {
 				// Value remains String
 				paramValue = splitParam[1];
 				paramMap.put(paramName, paramValue);
-			}else if(paramName.equals("velocityx") || paramName.equals("velocityy")){
+			} else if (paramName.equals("velocityx") || paramName.equals("velocityy")) {
 				// Value is converted to double
 				paramValue = Double.parseDouble(splitParam[1]);
 				paramMap.put(paramName, paramValue);
 			}
-			
+
 		}
-		
+
 		return paramMap;
-		
+
 	}
 
 }

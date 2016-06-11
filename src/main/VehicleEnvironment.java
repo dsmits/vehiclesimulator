@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * @author djura
- *
  *         Class VehicleEnvironment keeps track of the instantiated vehicles and
  *         defines the boundaries.
  */

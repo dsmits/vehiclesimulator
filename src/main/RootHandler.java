@@ -6,6 +6,12 @@ import java.io.OutputStream;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
+
+/**
+ * A basic HttpHandler that returns the string:
+ * "This is the vehicle simulation server."
+ *
+ */
 public class RootHandler implements HttpHandler {
 
 	@Override

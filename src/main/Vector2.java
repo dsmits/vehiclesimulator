@@ -1,5 +1,9 @@
 package main;
 
+/**
+ * Convenience class for storing 2d coordinates.
+ *
+ */
 public class Vector2 {
 	
 	public double x;
