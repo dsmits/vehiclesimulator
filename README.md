@@ -37,9 +37,9 @@ Instantiates another vehicle
 <h2>Running the client:</h2>
 
 The client is implemented completely in JavaScript.
-Open  simulatorClient.html in a webbrowser to use it.
+Open  client/simulatorClient.html in a webbrowser to use it.
 
-Important: The client assumes the server is running on localhost on port 8000 (the default port for the server.
+Important: The client assumes the server is running on localhost on port 8000 (the default port for the server).
 
 
 
